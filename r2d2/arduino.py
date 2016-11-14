@@ -2,6 +2,7 @@ import sys, serial, time
 # import the necessary packages
 from pyimagesearch.facedetector import FaceDetector
 from pyimagesearch import imutils
+from speech import Speech
 import cv2
 
 
@@ -38,6 +39,7 @@ def messageArduino(message):
     Arduino.write((message).encode())
     print (Arduino.readline().decode())
 
+
 commands = {"scale": "a",
             "r2D2": "b",
             "closeEncounters": "c",
@@ -53,20 +55,10 @@ commands = {"scale": "a",
 #### connect
 Arduino = connectArduino("/dev/cu.usbmodem1411")
 # construct the face detector
-fd = FaceDetector("./cascades/haarcascade_frontalface_default.xml")
-camera = cv2.VideoCapture(0)
+# fd = FaceDetector("./cascades/haarcascade_frontalface_default.xml")
+# camera = cv2.VideoCapture(0)
 
 while True:
-    numberOfFace = detectFace(camera, fd);
-    print(numberOfFace);
-    if(numberOfFace == 1):
-        messageArduino(commands["laugh"])
-    elif(numberOfFace == 2):
-        messageArduino(commands["closeEncounters"])
+
     # messageArduino(commands["laugh"])
     time.sleep(1)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
-
-camera.release()
-cv2.destroyAllWindows()

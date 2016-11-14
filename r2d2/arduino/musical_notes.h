@@ -100,4 +100,3 @@ const float  note_C8 = 4186.01;  //C8
 const float  note_Db8 = 4434.92;  //C#8/Db8
 const float  note_D8 = 4698.64;  //D8
 const float  note_Eb8 = 4978.03;  //D#8/Eb8
-
