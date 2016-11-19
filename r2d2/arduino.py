@@ -2,8 +2,11 @@ import sys, serial, time
 # import the necessary packages
 from pyimagesearch.facedetector import FaceDetector
 from pyimagesearch import imutils
-from speech import Speech
+import speech_recognition as sr
 import cv2
+
+
+
 
 
 def detectFace(camera, fd):
@@ -37,28 +40,29 @@ def connectArduino (port):
 
 def messageArduino(message):
     Arduino.write((message).encode())
-    print (Arduino.readline().decode())
-
-
-commands = {"scale": "a",
-            "r2D2": "b",
-            "closeEncounters": "c",
-            "ariel": "d",
-            "laugh2": "e",
-            "squeak": "f",
-            "waka": "g",
-            "catcall": "h",
-            "ohhh": "i",
-            "uhoh": "j",
-            "laugh": "k"}
+    print(Arduino.readline().decode())
 
 #### connect
-Arduino = connectArduino("/dev/cu.usbmodem1411")
+Arduino = connectArduino("/dev/cu.usbmodem1421")
 # construct the face detector
 # fd = FaceDetector("./cascades/haarcascade_frontalface_default.xml")
 # camera = cv2.VideoCapture(0)
+# obtain audio from the microphone
+r = sr.Recognizer()
+with sr.Microphone() as source:
+    print("Say something!")
+    audio = r.listen(source)
 
-while True:
+# recognize speech using Google Speech Recognition
+try:
+    command = r.recognize_google(audio);
+    print(command);
+    if(command == 'hello'):
+        messageArduino("b")
+    elif(command == 'listen'):
+        messageArduino(command)
 
-    # messageArduino(commands["laugh"])
-    time.sleep(1)
+except sr.UnknownValueError:
+    print("Google Speech Recognition could not understand audio")
+except sr.RequestError as e:
+    print("Could not request results from Google Speech Recognition service; {0}".format(e))
