@@ -5,10 +5,6 @@ from pyimagesearch import imutils
 import speech_recognition as sr
 import cv2
 
-
-
-
-
 def detectFace(camera, fd):
     (grabbed, frame) = camera.read()
     frame = imutils.resize(frame, width = 300)
@@ -43,7 +39,7 @@ def messageArduino(message):
     print(Arduino.readline().decode())
 
 #### connect
-Arduino = connectArduino("/dev/cu.usbmodem1421")
+Arduino = connectArduino("/dev/cu.usbmodem1411")
 # construct the face detector
 # fd = FaceDetector("./cascades/haarcascade_frontalface_default.xml")
 # camera = cv2.VideoCapture(0)
@@ -59,8 +55,8 @@ try:
     print(command);
     if(command == 'hello'):
         messageArduino("b")
-    elif(command == 'listen'):
-        messageArduino(command)
+    elif(command == 'defence'):
+        messageArduino('c')
 
 except sr.UnknownValueError:
     print("Google Speech Recognition could not understand audio")
